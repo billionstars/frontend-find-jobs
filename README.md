@@ -15,3 +15,9 @@ Hi this is ouw project to find jobs
 ## Run
 
 `npm run dev`
+
+## Members
+
+Erika Prieto
+
+Alejandro Ruiz
