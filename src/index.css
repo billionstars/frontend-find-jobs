@@ -3,10 +3,8 @@
 @tailwind utilities;
 
 
-.centrar{
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+@layer components{
+    .btn-primary{
+        @apply px-6 py-2 rounded-md bg-gray-900 text-white;
+    }
+};
