@@ -8,6 +8,11 @@ import Jobs from "./pages/Jobs";
 import Signup from "./pages/Signup";
 import Error404 from "./pages/Error404"
 
+import {FaHome,FaUser} from "react-icons/fa"
+import {MdWork} from "react-icons/md"
+import {IoIosCreate} from "react-icons/io"
+
+
 
 function App() {
 
@@ -15,22 +20,26 @@ function App() {
     {
       id:1,
       name:"home",
-      path:"/home"
+      path:"/home",
+      icon: <FaHome />
     },
     {
       id:2,
       name:"jobs",
-      path:"/jobs"
+      path:"/jobs",
+      icon: <MdWork />
     },
     {
       id:3,
       name:"login",
-      path:"/login"
+      path:"/login",
+      icon: <FaUser />
     },
     {
       id:4,
       name:"signup",
-      path:"/signup"
+      path:"/signup",
+      icon: <IoIosCreate />
     }
 ]
 
