@@ -5,6 +5,6 @@
 
 @layer components{
     .btn-primary{
-        @apply px-6 py-2 rounded-md bg-gray-900 text-white;
+        @apply px-6 py-2 rounded-md bg-azul text-white hover:bg-azul/70 hover:shadow-lg;
     }
 };

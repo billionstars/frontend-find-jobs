@@ -44,7 +44,7 @@ function App() {
 ]
 
   return (
-    <>
+    <div className="w-full min-h-screen">
       <Navbar listLinks={listLinks}/>
       <Routes>
         <Route path="/" element={<Home/>}/>
@@ -56,7 +56,7 @@ function App() {
       </Routes>
       <Footer />
       <BottomNav listLinks={listLinks}/>
-    </>
+    </div>
   )
 }
 

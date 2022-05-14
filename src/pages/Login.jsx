@@ -6,12 +6,12 @@ const Login = () => {
 
 
   return (
-    <>
-      <MainTitle title="login"/>
-      <section className='w-full py-20 flex justify-center items-center'>
+    <div className='w-full bg-lila/90'>
+      <MainTitle title="Login"/>
+      <section className='w-full py-72 h-96 flex justify-center items-center'>
         <Access/>
       </section>
-    </>
+    </div>
 
   )
 }
