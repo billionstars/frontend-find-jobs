@@ -1,54 +1,111 @@
-import React,{useRef} from 'react'
+import React, { useRef, useContext, useState } from "react";
+import { Link } from "react-router-dom";
+
+import { AuthContext } from "../context/AuthContext";
+
+import { post } from "../api";
+
+import { Input } from "./Input";
+import { Select } from "./Select";
+import { Button } from "./Button";
 
 const Register = () => {
+  const context = useContext(AuthContext);
+  const [error, setError] = useState({
+    isError: false,
+    message: "",
+    loading: false,
+    code: 0,
+  });
 
-    const email = useRef()
-    const password = useRef()
-    const name = useRef()
-    const lastName = useRef()
-    const phone = useRef()
+  const name = useRef();
+  const email = useRef();
+  const password = useRef();
+  const role = useRef();
 
-  
-    const login=(event)=>{
-      event.preventDefault()
-      fetch("http://localhost:4000/api/auth/login",{
-          method:"POST",
-          body:{
-              email: email.current.value,
-              password:password.current.value,
-              name:name.current.value,
-              lastName:lastName.current.value,
-              phone:phone.current.value
-          }
-      }).then(res=>res.json())
-      .then(data=>console.log(data))
-      .catch(error=>console.log(error))
-    }
-  
+  const signup = (event) => {
+    event.preventDefault();
+
+    setError({ ...error, loading: true });
+    post("/api/auth/signup", {
+      name: name.current.value,
+      email: email.current.value,
+      password: password.current.value,
+      role: role.current.value,
+    })
+      .then(({ data }) => {
+        setError({ ...error, loading: false });
+        localStorage.setItem("token", data.token);
+        context.setAuth({
+          id: data.user.id,
+          name: data.user.name,
+          logged: true,
+        });
+      })
+      .catch((error) => {
+        // console.log(error.response.data);
+        setError({
+          isError: true,
+          message: error.response.data.message,
+          loading: false,
+          code: error.response.status,
+        });
+      });
+  };
+
   return (
-    <form className='w-96 p-4 bg-azul/80 rounded-xl shadow-lg flex flex-col justify-center items-center' onSubmit={login}>
-    <label className='w-full text-white'>Email:
-      <input type="text" ref={email} className='w-full p-2 mb-2 rounded-lg text-black' placeholder='example@email.com' />            
-    </label>
-    <label className='w-full text-white'>
-      Password:
-      <input type="password" ref={password} className='w-full p-2 mb-2 rounded-lg text-black' placeholder='*****'/>
-    </label>
-    <label className='w-full text-white'>
-      Password:
-      <input type="text" ref={name} className='w-full p-2 mb-2 rounded-lg text-black' placeholder='Coco'/>
-    </label>
-    <label className='w-full text-white'>
-      Last Name:
-      <input type="text" ref={lastName} className='w-full p-2 mb-2 rounded-lg text-black' placeholder='Perez'/>
-    </label>
-    <label className='w-full text-white'>
-      Phone:
-      <input type="phone" ref={phone} className='w-full p-2 mb-2 rounded-lg text-black' placeholder='+57'/>
-    </label>
-    <button className='bg-rosa text-white px-6 py-2 rounded-md hover:bg-rosa/80 hover:shadow-lg'>Login</button>
-</form>
-  )
-}
+    <div>
+      <form
+        className="w-96 p-4 bg-azul/80 rounded-xl shadow-lg flex flex-col justify-center items-center"
+        onSubmit={signup}
+      >
+        <Input
+          inputTitle="Name"
+          inputType="text"
+          inputRef={name}
+          inputPlaceholder="First Name"
+        />
+        <Input
+          inputTitle="Email"
+          inputType="email"
+          inputRef={email}
+          inputPlaceholder="example@xyz.co"
+        />
+        <Input
+          inputTitle="Password"
+          inputType="password"
+          inputRef={password}
+          inputPlaceholder="******"
+        />
+        <Select
+          selectTitle="Role"
+          selectRef={role}
+          selectValues={["employer", "applicant"]}
+        />
+        <Button textButton="Sign Up" />
+      </form>
 
-export default Register
+      {error.loading && (
+        <p className="w-full p-4 my-2 bg-yellow-200 rounded-lg shadow-lg text-black/70">
+          Loading.... wait...
+        </p>
+      )}
+
+      {error.isError && (
+        <p className="w-full p-4 my-2 bg-red-200 rounded-lg shadow-lg text-black/70">
+          {error.message}
+          {error.code === 400 && (
+            <Link
+              to="/login"
+              className="p-2 mx-2 rounded-md bg-white/30 text-white hover:underline"
+            >
+              Login
+            </Link>
+          )}
+        </p>
+      )}
+    </div>
+  );
+};
+
+export default Register;
