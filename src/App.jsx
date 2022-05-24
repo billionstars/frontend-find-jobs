@@ -1,6 +1,9 @@
 import { Route, Routes } from "react-router-dom";
+import { useContext, useEffect } from "react";
 
-import { AuthProvider } from "./context/AuthContext";
+import { AuthContext } from "./context/AuthContext";
+
+import { recoverSession } from "./api";
 
 import BottomNav from "./components/BottomNav";
 import Navbar from "./components/Navbar";
@@ -10,55 +13,53 @@ import Footer from "./components/Footer";
 import Jobs from "./pages/Jobs";
 import Signup from "./pages/Signup";
 import Error404 from "./pages/Error404";
-
-import { FaHome, FaUser } from "react-icons/fa";
-import { MdWork } from "react-icons/md";
-import { IoIosCreate } from "react-icons/io";
+import { User } from "./pages/User";
 
 function App() {
-  const listLinks = [
-    {
-      id: 1,
-      name: "home",
-      path: "/home",
-      icon: <FaHome />,
-    },
-    {
-      id: 2,
-      name: "jobs",
-      path: "/jobs",
-      icon: <MdWork />,
-    },
-    {
-      id: 3,
-      name: "login",
-      path: "/login",
-      icon: <FaUser />,
-    },
-    {
-      id: 4,
-      name: "signup",
-      path: "/signup",
-      icon: <IoIosCreate />,
-    },
-  ];
+  const { auth, setAuth } = useContext(AuthContext);
+
+  useEffect(() => {
+    const recSession = () => {
+      const token = localStorage.getItem("token");
+
+      if (token) {
+        recoverSession("/api/auth/validate")
+          .then(({ data }) => {
+            // console.log("recovery", data.user);
+            if (data.failed) {
+              console.log("Recovery Error", data);
+            } else {
+              setAuth({
+                id: data.user.id,
+                name: data.user.name,
+                email: data.user.email,
+                role: data.user.role,
+                logged: true,
+              });
+            }
+          })
+          .catch((error) => console.log("Catch Recovery Error: ", error));
+      }
+    };
+
+    recSession();
+  }, []);
 
   return (
-    <AuthProvider>
-      <div className="w-full min-h-screen">
-        <Navbar listLinks={listLinks} />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/jobs" element={<Jobs />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="*" element={<Error404 />} />
-        </Routes>
-        <Footer />
-        <BottomNav listLinks={listLinks} />
-      </div>
-    </AuthProvider>
+    <div className="w-full min-h-screen">
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        {auth.logged && <Route path="/user/:userId" element={<User />} />}
+        <Route path="/jobs" element={<Jobs />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="*" element={<Error404 />} />
+      </Routes>
+      <Footer />
+      <BottomNav />
+    </div>
   );
 }
 

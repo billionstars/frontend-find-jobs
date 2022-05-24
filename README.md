@@ -1,12 +1,11 @@
 # Welcome
 
-Hi this is ouw project to find jobs
+Hi this is our project to find jobs
 
 ## Tech
 
 - React
 - Tailwind
-- (ESLint)
 
 ## Install
 
@@ -18,6 +17,6 @@ Hi this is ouw project to find jobs
 
 ## Members
 
-Erika Prieto
+[Erika Prieto 🐰](https://github.com/Eriry930)
 
-Alejandro Ruiz
+[Alejandro Ruiz 👨🏽‍🚀](https://github.com/kannder83)

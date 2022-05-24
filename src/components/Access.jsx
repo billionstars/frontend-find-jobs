@@ -1,6 +1,6 @@
-import React, { useRef, useContext, useState } from "react";
+import React, { useRef, useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { post } from "../api";
 
@@ -8,7 +8,7 @@ import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 
 const Access = () => {
-  const context = useContext(AuthContext);
+  const { setAuth } = useContext(AuthContext);
 
   const [error, setError] = useState({
     isError: false,
@@ -32,12 +32,14 @@ const Access = () => {
       .then((data) => {
         const { token, user } = data.data;
         localStorage.setItem("token", token);
-        context.setAuth({
+        setAuth({
           id: user.id,
           name: user.name,
+          email: user.email,
+          role: user.role,
           logged: true,
         });
-        navigate("/jobs", {
+        navigate(`/user/${user.id}`, {
           replace: true,
         });
       })
@@ -82,6 +84,7 @@ const Access = () => {
           {error.message}
         </p>
       )}
+      {/* <button onClick={recoverSession}>Retomar</button> */}
     </div>
   );
 };
