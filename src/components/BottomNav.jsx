@@ -1,10 +1,9 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import { Logout } from "../components/Logout";
 
 const BottomNav = () => {
-  const { listNavLink, auth } = useContext(AuthContext);
+  const { listNavLink, auth, handleLogout } = useContext(AuthContext);
 
   return (
     <>
@@ -30,7 +29,7 @@ const BottomNav = () => {
             <div className="p-2 flex justify-center items-center mx-2">
               <Link
                 to={listNavLink[2].path}
-                className="text-4xl hover:text-rosa/80 transition-all duration-300"
+                className="text-3xl hover:text-rosa/80 transition-all duration-300"
               >
                 {listNavLink[2].icon}
               </Link>
@@ -46,9 +45,29 @@ const BottomNav = () => {
               </Link>
             </div>
           )}
+          {/* when is logged */}
+          {auth.logged && (
+            <div className="p-2 flex justify-center items-center mx-2">
+              <Link
+                to={`${listNavLink[4].path}/${auth.id}`}
+                className="text-3xl flex flex-col justify-center items-center hover:text-rosa/80 transition-all duration-300"
+              >
+                {listNavLink[4].icon}
+              </Link>
+            </div>
+          )}
 
-          {auth.logged && <Link to={`/user/${auth.id}`}>{auth.name}</Link>}
-          {auth.logged && <Logout />}
+          {auth.logged && (
+            <div className="p-2 flex justify-center items-center mx-2">
+              <Link
+                to={listNavLink[5].path}
+                onClick={handleLogout}
+                className="text-4xl flex flex-col justify-center items-center hover:text-rosa/80 transition-all duration-300"
+              >
+                {listNavLink[5].icon}
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </>

@@ -80,7 +80,7 @@ const Register = () => {
         <Select
           selectTitle="Role"
           selectRef={role}
-          selectValues={["employer", "applicant"]}
+          selectValues={["applicant", "employer"]}
         />
         <Button textButton="Sign Up" />
       </form>

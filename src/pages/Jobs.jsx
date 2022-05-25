@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { MainTitle } from "../components/MainTitle";
+import { Link } from "react-router-dom";
 
 import { getWithToken } from "../api";
 import { AuthContext } from "../context/AuthContext";
@@ -42,11 +43,21 @@ const Jobs = () => {
               return (
                 <li
                   key={job._id}
-                  className="w-full p-4 my-2 rounded-lg  bg-morado/40 hover:bg-morado/50"
+                  className="w-full p-4 my-2 rounded-lg bg-morado/40 hover:bg-morado/50"
                 >
-                  <h4>Description: {job.description}</h4>
-                  <pre>Category: {JSON.stringify(job.category, null, 2)}</pre>
-                  <p>Salary: {job.salary}</p>
+                  <div className="my-3">
+                    <h4>Description: {job.description}</h4>
+                    <pre>Category: {JSON.stringify(job.category, null, 2)}</pre>
+                    <p>Salary: {job.salary}</p>
+                  </div>
+                  <div className="w-full flex">
+                    <Link
+                      className="px-4 py-2 rounded-md bg-azul/40 hover:bg-azul/60 hover:shadow-md"
+                      to={`/jobs/${job._id}`}
+                    >
+                      View
+                    </Link>
+                  </div>
                 </li>
               );
             })}

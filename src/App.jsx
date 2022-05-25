@@ -14,6 +14,7 @@ import Jobs from "./pages/Jobs";
 import Signup from "./pages/Signup";
 import Error404 from "./pages/Error404";
 import { User } from "./pages/User";
+import { Offert } from "./pages/Offert";
 
 function App() {
   const { auth, setAuth } = useContext(AuthContext);
@@ -53,6 +54,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
         {auth.logged && <Route path="/user/:userId" element={<User />} />}
+        {auth.logged && <Route path="/jobs/:jobId" element={<Offert />} />}
         <Route path="/jobs" element={<Jobs />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="*" element={<Error404 />} />

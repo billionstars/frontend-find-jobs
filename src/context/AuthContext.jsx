@@ -1,12 +1,17 @@
 import React, { createContext, useState } from "react";
 
-import { FaHome, FaUser } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+
+import { FaHome, FaUserAlt, FaUserCircle } from "react-icons/fa";
 import { MdWork } from "react-icons/md";
 import { IoIosCreate } from "react-icons/io";
+import { RiLogoutBoxRFill } from "react-icons/ri";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const navigate = useNavigate();
+
   const listLinks = [
     {
       id: 1,
@@ -24,13 +29,25 @@ export const AuthProvider = ({ children }) => {
       id: 3,
       name: "login",
       path: "/login",
-      icon: <FaUser />,
+      icon: <FaUserAlt />,
     },
     {
       id: 4,
       name: "signup",
       path: "/signup",
       icon: <IoIosCreate />,
+    },
+    {
+      id: 5,
+      name: "profile",
+      path: "/user",
+      icon: <FaUserCircle />,
+    },
+    {
+      id: 6,
+      name: "logout",
+      path: "",
+      icon: <RiLogoutBoxRFill />,
     },
   ];
 
@@ -44,12 +61,27 @@ export const AuthProvider = ({ children }) => {
     logged: false,
   });
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setAuth({
+      logged: false,
+      name: "",
+      email: "",
+      id: "",
+      role: "",
+    });
+    navigate(`/home`, {
+      replace: true,
+    });
+  };
+
   return (
     <AuthContext.Provider
       value={{
         auth,
         setAuth,
         listNavLink,
+        handleLogout,
       }}
     >
       {children}
